@@ -1,5 +1,5 @@
 module ProgressiveAligner
 
-# package code goes here
-
+  include("ProfileAligner.jl")
+  include("Clustering.jl")
 end # module

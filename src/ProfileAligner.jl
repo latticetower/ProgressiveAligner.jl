@@ -120,7 +120,7 @@ hsh = [
     end
   end
 
-  function build_alignment_matrix{T}(
+  function buildAlignmentMatrix{T}(
                   P::Profile{T},
                   Q :: Profile{T},
                   matrixdata :: AlignmentMatrix{T},
@@ -151,7 +151,7 @@ hsh = [
   end
 
   #returns score from precomputed matrix and last column/row coordinates
-  function get_score{T}(P::Profile{T}, Q :: Profile{T}, matrixdata :: AlignmentMatrix{T})
+  function getscore{T}(P::Profile{T}, Q :: Profile{T}, matrixdata :: AlignmentMatrix{T})
     n = P.stringsize
     m = Q.stringsize
     return (n + 1, m + 1, matrixdata.matrix[n + 1, m + 1])
