@@ -3,6 +3,7 @@ module ProfileAligner
   export AlignmentMatrix, Profile,
          score, align, getstrings, scoreprofiles,
          measurequality, setScoringMatrix
+
   import DataReader.FastaRecord, DataReader.ScoreMatrix
 
   scoringMatrix = ScoreMatrix()

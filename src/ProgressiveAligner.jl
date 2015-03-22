@@ -1,4 +1,10 @@
 module ProgressiveAligner
+
+  export DataReader,
+        DataWriter,
+        ProfileAligner,
+        Clustering
+
   include("DataReader.jl")
   include("DataWriter.jl")
   include("ProfileAligner.jl")
