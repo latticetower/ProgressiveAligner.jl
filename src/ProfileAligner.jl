@@ -53,7 +53,7 @@ module ProfileAligner
           end
         end
       end
-      new(rawdata, data, size_1, size_2, descriptions)
+      new(rawdata, data) #, size_1, size_2, descriptions)
     end
   end
 
