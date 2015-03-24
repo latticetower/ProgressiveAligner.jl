@@ -1,6 +1,6 @@
 module DataWriter
   export writeSequences
-  include("DataReader.jl")
+
   import DataReader.FastaRecord
 
   function writeSequences(output_file_name :: String, sequences :: Vector{FastaRecord})

@@ -1,5 +1,6 @@
 module ProgressiveAligner
-
+  push!(LOAD_PATH, dirname(@__FILE__()))
+  
   export DataReader,
         DataWriter,
         ProfileAligner,

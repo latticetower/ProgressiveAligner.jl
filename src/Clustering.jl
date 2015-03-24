@@ -1,6 +1,6 @@
 module Clustering
   export UPGMA, WPGMA, NeighbourJoining
-  include("ProfileAligner.jl")
+
   import ProfileAligner.Profile
 
   #typealias DistanceHash{T} Dict{Profile{T}, Dict{Profile{T}, T}}
