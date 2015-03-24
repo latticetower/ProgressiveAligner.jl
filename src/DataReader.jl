@@ -36,14 +36,30 @@ module DataReader
     end
     records
   end
+  #helper function to avoid problems with readdlm from standard lib (empty lines skipping, \r\n, etc.)
+  function my_readdlm(input_file :: String)
+    removeEol = str-> strip(str, ['\r', '\n'])
+    notCommentOrEmptyLine = x -> !beginswith(x, "#") && !isempty(x)
+    getNumbersAndChars = n -> ismatch(r"[^A-Z*]", n) ? float(n) : n[1]
+
+    linesProcessor = lines -> map( x-> map(getNumbersAndChars, split(x)),
+                              filter(notCommentOrEmptyLine, map(removeEol, lines)))
+
+    f = open(input_file)
+    lines = linesProcessor(readlines(f))
+    close(f)
+    lines
+  end
 
   function readMatrix(input_file :: String)
-    result = readdlm(input_file)
-    k = [getindex(result, 1, inner_key)[1] => inner_key for inner_key = 1:24]
+    result = my_readdlm(input_file)
+    #result = readdlm(input_file)
+    # thus dirty fix needed to avoid error on empty lines in input file. in julia 0.3 readdlm doesn't skip them
+    k = [ getindex(getindex(result, 1), inner_key)[1] => inner_key for inner_key = 1:24]
     h = [
         [
-            getindex(result, outer_key, inner_key + 1) :: Float64
-            for inner_key = 1:outer_key-1
+            getindex(getindex(result, outer_key), inner_key + 1) :: Float64
+            for inner_key = 1 : outer_key - 1
         ]
         for outer_key = 2 : 25
     ]
