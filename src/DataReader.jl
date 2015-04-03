@@ -1,14 +1,17 @@
 module DataReader
   export readSequences, FastaRecord, readMatrix, ScoreMatrix
 
-  type FastaRecord
+  immutable FastaRecord
     description :: ASCIIString
     sequence :: ASCIIString
+
   end
 
-  type ScoreMatrix
+  ==(a::FastaRecord, b::FastaRecord) = a.description == b.description && a.sequence == b.sequence
+
+  immutable ScoreMatrix
     keys :: Dict{Char, Int}
-    hsh :: Array{Array{Float64, 1}, 1}
+    hsh  :: Array{Array{Float64, 1}, 1}
   end
   ScoreMatrix() = ScoreMatrix(Dict{Char, Int}(), [])
 
@@ -36,6 +39,7 @@ module DataReader
     end
     records
   end
+
   #helper function to avoid problems with readdlm from standard lib (empty lines skipping, \r\n, etc.)
   function my_readdlm(input_file :: String)
     removeEol = str-> strip(str, ['\r', '\n'])
