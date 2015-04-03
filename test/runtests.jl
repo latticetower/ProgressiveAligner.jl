@@ -6,7 +6,7 @@ using Base.Test
 tests = [
     "DataReaderTests",
     #"DataWriterTests",
-    #"ClusteringTests",
+    "ClusteringTests",
     "ProfileAlignerTests"
     ]
 

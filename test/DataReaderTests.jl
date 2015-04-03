@@ -1,13 +1,17 @@
+importall DataReader
 
-fasta_record = DataReader.FastaRecord("test string1", "ACGT")
+fasta_record  = FastaRecord("test string1", "ACGT")
+fasta_record2 = FastaRecord("test string1", "ACGT")
 
 println("testing FastaRecord...")
 @test fasta_record.description == "test string1"
 @test fasta_record.sequence == "ACGT"
 
+@test fasta_record == fasta_record2
+
 println("testing FastaRecords loading from file...")
 
-sequences = DataReader.readSequences(dirname(@__FILE__()) * "/../data/input_test_sequences.faa")
+sequences = readSequences(dirname(@__FILE__()) * "/../data/input_test_sequences.faa")
 @test length(sequences) > 0
 @test length(sequences) == 10
 @test sequences[1].description == "1"
@@ -17,7 +21,7 @@ sequences = DataReader.readSequences(dirname(@__FILE__()) * "/../data/input_test
 
 println("testing ScoreMatrix loading from sample BLOSUM62 matrix file from ncbi ftp...")
 
-matrix = DataReader.readMatrix(dirname(@__FILE__()) * "/../data/blosum62.txt")
+matrix = readMatrix(dirname(@__FILE__()) * "/../data/blosum62.txt")
 @test length(matrix.keys) == length(matrix.hsh) == 24
 
 for s = 1 : length(matrix.hsh)
