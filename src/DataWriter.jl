@@ -3,7 +3,7 @@ module DataWriter
 
   import DataReader.FastaRecord
 
-  function writeSequences(output_file_name :: String, sequences :: Vector{FastaRecord})
+  function writeSequences(output_file_name :: AbstractString, sequences :: Vector{FastaRecord})
 
     output_file = open(output_file_name, "w")
     for s in sequences
