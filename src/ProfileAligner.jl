@@ -180,7 +180,7 @@ module ProfileAligner
                           matrixdata :: AlignmentMatrix{T},
                           lastrow :: Int64, lastcol :: Int64)
     debugprint(matrixdata.path)
-    path = (Char, Int64, Int64)[]
+    path = Tuple{Char, Int64, Int64}[]
     (direction, row, col) = (matrixdata.path[lastrow, lastcol], lastrow, lastcol)
     while (row > 1 || col > 1)
       push!(path, (direction, row - 1, col - 1))
