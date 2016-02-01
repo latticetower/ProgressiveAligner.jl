@@ -68,9 +68,9 @@ module ProfileAligner
     matrix :: Array{T, 2}
     path :: Array{Char, 2}
 
-    AlignmentMatrix(n :: Int64, m :: Int64) = build(n, m)
+    AlignmentMatrix(m :: Array{T, 2}, p :: Array{Char, 2}) = new(m, p)
 
-    function build(n :: Int64, m :: Int64)
+    function call{T}(::Type{AlignmentMatrix{T}}, n :: Int64, m :: Int64)
       matrix = zero(Array(T, n, m))
       path = Array(Char, n, m)
       AlignmentMatrix{T}(matrix, path)
