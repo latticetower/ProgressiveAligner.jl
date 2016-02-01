@@ -28,7 +28,7 @@ module ProfileAligner
     numberofstrings :: Int
     descriptions :: Array{ASCIIString, 1}
 
-    Profile(raw :: Array{Char, 2}, desc :: Array{ASCIIString, 1}) = getprofile{T}(raw, desc)
+    #Profile(raw :: Array{Char, 2}, desc :: Array{ASCIIString, 1}) = getprofile{T}(raw, desc)
     #Profile(raw :: Array{Char, 2}, desc :: Array{String, 1}) = getprofile(raw, desc)
     Profile(str :: ASCIIString, desc :: ASCIIString = "") = Profile{T}( reshape([ letter for letter in str ], length(str), 1), [desc] )
     Profile(record :: FastaRecord) = Profile{T}(record.sequence, record.description)
@@ -40,7 +40,8 @@ module ProfileAligner
             desc :: Array{ASCIIString, 1}) = new{T}(raw, d, s1, s2, desc)
     #function getprofile(raw :: Array{Char, 2}, descriptions :: Array{ASCIIString, 1})
 
-    function getprofile(raw :: Array{Char, 2}, descriptions :: Array{ASCIIString, 1} = [])
+    #function call{T}(::Type{SummedArray}, a::Vector{T})
+    function  call{T}(::Type{Profile{T}}, raw :: Array{Char, 2}, descriptions :: Array{ASCIIString, 1} = [])
       rawdata = copy(raw)
       size_1 = size(raw, 1)
       size_2 = size(raw, 2)
