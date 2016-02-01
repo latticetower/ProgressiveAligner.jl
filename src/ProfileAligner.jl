@@ -31,7 +31,7 @@ module ProfileAligner
     Profile(raw :: Array{Char, 2}, desc :: Array{ASCIIString, 1}) = getprofile(raw, desc)
     #Profile(raw :: Array{Char, 2}, desc :: Array{String, 1}) = getprofile(raw, desc)
     Profile(str :: ASCIIString, desc :: ASCIIString = "") = Profile{T}( reshape([ letter for letter in str ], length(str), 1), [desc] )
-    Profile{T}(record :: FastaRecord) = Profile{T}(record.sequence, record.description)
+    Profile(record :: FastaRecord) = Profile{T}(record.sequence, record.description)
 
     Profile{T}(raw :: Array{Char, 2},
             d :: Array{Dict{Char, T}, 1},
@@ -59,7 +59,7 @@ module ProfileAligner
           end
         end
       end
-      new(rawdata, data, size_1, size_2, descriptions)
+      Profile{T}(rawdata, data, size_1, size_2, descriptions)
     end
   end
 
@@ -72,7 +72,7 @@ module ProfileAligner
     function build(n :: Int64, m :: Int64)
       matrix = zero(Array(T, n, m))
       path = Array(Char, n, m)
-      new(matrix, path)
+      AlignmentMatrix{T}(matrix, path)
     end
   end
 
@@ -204,7 +204,7 @@ module ProfileAligner
     error("unknown direction in mix profile column")
   end
 
-  function mixprofiles{T}(P :: Profile{T}, Q :: Profile{T}, indices :: Vector{(Char, Int64, Int64)})
+  function mixprofiles{T}(P :: Profile{T}, Q :: Profile{T}, indices :: Vector{Tuple{Char, Int64, Int64}})
 
     newProfileSize = length(indices)
     tempMatrix = Array(Char, newProfileSize, P.numberofstrings + Q.numberofstrings)
