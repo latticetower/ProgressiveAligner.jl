@@ -2,7 +2,7 @@ module DataReader
   export readSequences, FastaRecord, readMatrix, ScoreMatrix
 
   import Base.==
-  
+
   immutable FastaRecord
     description :: ASCIIString
     sequence :: ASCIIString
@@ -45,7 +45,7 @@ module DataReader
   #helper function to avoid problems with readdlm from standard lib (empty lines skipping, \r\n, etc.)
   function my_readdlm(input_file :: AbstractString)
     removeEol = str-> strip(str, ['\r', '\n'])
-    notCommentOrEmptyLine = x -> !beginswith(x, "#") && !isempty(x)
+    notCommentOrEmptyLine = x -> !startswith(x, "#") && !isempty(x)
     getNumbersAndChars = n -> ismatch(r"[^A-Z*]", n) ? float(n) : n[1]
 
     linesProcessor = lines -> map( x-> map(getNumbersAndChars, split(x)),
