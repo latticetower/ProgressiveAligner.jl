@@ -28,19 +28,20 @@ module ProfileAligner
     numberofstrings :: Int
     descriptions :: Array{ASCIIString, 1}
 
-    Profile(raw :: Array{Char, 2}, desc :: Array{ASCIIString, 1}) = getprofile(raw, desc)
+    #Profile(raw :: Array{Char, 2}, desc :: Array{ASCIIString, 1}) = getprofile{T}(raw, desc)
     #Profile(raw :: Array{Char, 2}, desc :: Array{String, 1}) = getprofile(raw, desc)
     Profile(str :: ASCIIString, desc :: ASCIIString = "") = Profile{T}( reshape([ letter for letter in str ], length(str), 1), [desc] )
-    Profile{T}(record :: FastaRecord) = Profile{T}(record.sequence, record.description)
+    Profile(record :: FastaRecord) = Profile{T}(record.sequence, record.description)
 
-    Profile{T}(raw :: Array{Char, 2},
+    Profile(raw :: Array{Char, 2},
             d :: Array{Dict{Char, T}, 1},
             s1 :: Int,
             s2 :: Int,
-            desc :: Array{ASCIIString, 1}) = new(raw, d, s1, s2, desc)
+            desc :: Array{ASCIIString, 1}) = new{T}(raw, d, s1, s2, desc)
     #function getprofile(raw :: Array{Char, 2}, descriptions :: Array{ASCIIString, 1})
 
-    function getprofile(raw :: Array{Char, 2}, descriptions :: Array{ASCIIString, 1} = [])
+    #function call{T}(::Type{SummedArray}, a::Vector{T})
+    function  call{T}(::Type{Profile{T}}, raw :: Array{Char, 2}, descriptions :: Array{ASCIIString, 1} = [])
       rawdata = copy(raw)
       size_1 = size(raw, 1)
       size_2 = size(raw, 2)
@@ -59,7 +60,7 @@ module ProfileAligner
           end
         end
       end
-      new(rawdata, data, size_1, size_2, descriptions)
+      Profile{T}(rawdata, data, size_1, size_2, descriptions)
     end
   end
 
@@ -67,12 +68,12 @@ module ProfileAligner
     matrix :: Array{T, 2}
     path :: Array{Char, 2}
 
-    AlignmentMatrix(n :: Int64, m :: Int64) = build(n, m)
+    AlignmentMatrix(m :: Array{T, 2}, p :: Array{Char, 2}) = new(m, p)
 
-    function build(n :: Int64, m :: Int64)
+    function call{T}(::Type{AlignmentMatrix{T}}, n :: Int64, m :: Int64)
       matrix = zero(Array(T, n, m))
       path = Array(Char, n, m)
-      new(matrix, path)
+      AlignmentMatrix{T}(matrix, path)
     end
   end
 
@@ -179,7 +180,7 @@ module ProfileAligner
                           matrixdata :: AlignmentMatrix{T},
                           lastrow :: Int64, lastcol :: Int64)
     debugprint(matrixdata.path)
-    path = (Char, Int64, Int64)[]
+    path = Tuple{Char, Int64, Int64}[]
     (direction, row, col) = (matrixdata.path[lastrow, lastcol], lastrow, lastcol)
     while (row > 1 || col > 1)
       push!(path, (direction, row - 1, col - 1))
@@ -204,7 +205,7 @@ module ProfileAligner
     error("unknown direction in mix profile column")
   end
 
-  function mixprofiles{T}(P :: Profile{T}, Q :: Profile{T}, indices :: Vector{(Char, Int64, Int64)})
+  function mixprofiles{T}(P :: Profile{T}, Q :: Profile{T}, indices :: Vector{Tuple{Char, Int64, Int64}})
 
     newProfileSize = length(indices)
     tempMatrix = Array(Char, newProfileSize, P.numberofstrings + Q.numberofstrings)

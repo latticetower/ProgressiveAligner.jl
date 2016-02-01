@@ -1,6 +1,8 @@
 module DataReader
   export readSequences, FastaRecord, readMatrix, ScoreMatrix
 
+  import Base.==
+
   immutable FastaRecord
     description :: ASCIIString
     sequence :: ASCIIString
@@ -16,7 +18,7 @@ module DataReader
   ScoreMatrix() = ScoreMatrix(Dict{Char, Int}(), [])
 
 
-  function readSequences(input_file_name :: String)
+  function readSequences(input_file_name :: AbstractString)
     records = FastaRecord[]
     temp_desc = ""
     temp_str = ""
@@ -41,9 +43,9 @@ module DataReader
   end
 
   #helper function to avoid problems with readdlm from standard lib (empty lines skipping, \r\n, etc.)
-  function my_readdlm(input_file :: String)
+  function my_readdlm(input_file :: AbstractString)
     removeEol = str-> strip(str, ['\r', '\n'])
-    notCommentOrEmptyLine = x -> !beginswith(x, "#") && !isempty(x)
+    notCommentOrEmptyLine = x -> !startswith(x, "#") && !isempty(x)
     getNumbersAndChars = n -> ismatch(r"[^A-Z*]", n) ? float(n) : n[1]
 
     linesProcessor = lines -> map( x-> map(getNumbersAndChars, split(x)),
@@ -55,7 +57,7 @@ module DataReader
     lines
   end
 
-  function readMatrix(input_file :: String)
+  function readMatrix(input_file :: AbstractString)
     result = my_readdlm(input_file)
     #result = readdlm(input_file)
     # thus dirty fix needed to avoid error on empty lines in input file. in julia 0.3 readdlm doesn't skip them

@@ -42,7 +42,7 @@ module Clustering
     (f.numberofstrings*get(distancesInfo, f, k) + g.numberofstrings*get(distancesInfo, g, k))/(g.numberofstrings + f.numberofstrings)
   end
 
-  getCurrentPGMADistance{T} (
+  getCurrentPGMADistance{T}(
           distancesInfo :: DistanceMatrix{T},
           vertices :: Vector{Profile{T}},
           vertsize :: Int64,
