@@ -28,16 +28,16 @@ module ProfileAligner
     numberofstrings :: Int
     descriptions :: Array{ASCIIString, 1}
 
-    Profile(raw :: Array{Char, 2}, desc :: Array{ASCIIString, 1}) = getprofile(raw, desc)
+    Profile(raw :: Array{Char, 2}, desc :: Array{ASCIIString, 1}) = getprofile{T}(raw, desc)
     #Profile(raw :: Array{Char, 2}, desc :: Array{String, 1}) = getprofile(raw, desc)
     Profile(str :: ASCIIString, desc :: ASCIIString = "") = Profile{T}( reshape([ letter for letter in str ], length(str), 1), [desc] )
     Profile(record :: FastaRecord) = Profile{T}(record.sequence, record.description)
 
-    Profile{T}(raw :: Array{Char, 2},
+    Profile(raw :: Array{Char, 2},
             d :: Array{Dict{Char, T}, 1},
             s1 :: Int,
             s2 :: Int,
-            desc :: Array{ASCIIString, 1}) = new(raw, d, s1, s2, desc)
+            desc :: Array{ASCIIString, 1}) = new{T}(raw, d, s1, s2, desc)
     #function getprofile(raw :: Array{Char, 2}, descriptions :: Array{ASCIIString, 1})
 
     function getprofile(raw :: Array{Char, 2}, descriptions :: Array{ASCIIString, 1} = [])
